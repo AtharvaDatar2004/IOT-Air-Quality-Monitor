@@ -1,0 +1,40 @@
+#include <WiFi.h>
+#include <BlynkSimpleEsp32.h>
+#include "DHT.h"
+
+#define DHTPIN 4
+#define DHTTYPE DHT22
+#define MQ135_PIN A0  // CO2 sensor
+#define PM25_PIN A1   // PM2.5 sensor
+
+char auth[] = "YOUR_BLYNK_AUTH";  // Blynk authentication token
+char ssid[] = "YOUR_WIFI_SSID";
+char pass[] = "YOUR_WIFI_PASSWORD";
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+    Serial.begin(115200);
+    WiFi.begin(ssid, pass);
+    Blynk.begin(auth, ssid, pass);
+    dht.begin();
+}
+
+void loop() {
+    float temp = dht.readTemperature();
+    float hum = dht.readHumidity();
+    int co2 = analogRead(MQ135_PIN);
+    int pm25 = analogRead(PM25_PIN);
+
+    Blynk.virtualWrite(V1, temp);
+    Blynk.virtualWrite(V2, hum);
+    Blynk.virtualWrite(V3, co2);
+    Blynk.virtualWrite(V4, pm25);
+
+    Serial.print("Temp: "); Serial.print(temp); Serial.print("C | ");
+    Serial.print("Humidity: "); Serial.print(hum); Serial.print("% | ");
+    Serial.print("CO2: "); Serial.print(co2); Serial.print(" ppm | ");
+    Serial.print("PM2.5: "); Serial.println(pm25);
+
+    delay(2000);
+}

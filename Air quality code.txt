@@ -1,0 +1,36 @@
+#include <LiquidCrystal.h>
+#include "DHT.h"
+
+#define DHTPIN 2
+#define DHTTYPE DHT22
+#define MQ135_PIN A0
+
+DHT dht(DHTPIN, DHTTYPE);
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
+
+void setup() {
+    Serial.begin(9600);
+    dht.begin();
+    lcd.begin(16, 2);
+    lcd.print("Air Quality Monitor");
+    delay(2000);
+    lcd.clear();
+}
+
+void loop() {
+    float temp = dht.readTemperature();
+    float hum = dht.readHumidity();
+    int airQuality = analogRead(MQ135_PIN);
+
+    lcd.setCursor(0, 0);
+    lcd.print("Temp: "); lcd.print(temp); lcd.print("C");
+
+    lcd.setCursor(0, 1);
+    lcd.print("AQ: "); lcd.print(airQuality);
+
+    Serial.print("Temp: "); Serial.print(temp);
+    Serial.print(" C | Humidity: "); Serial.print(hum);
+    Serial.print("% | Air Quality: "); Serial.println(airQuality);
+
+    delay(2000);
+}
