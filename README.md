@@ -41,3 +41,7 @@ Working Principle:
 3.The user can monitor air quality live on a mobile app or web dashboard.
 4.If pollution levels exceed thresholds, the system triggers alerts or notifications.
 5.Data is logged for historical trend analysis and long-term monitoring.
+
+# OUTPUT
+
+![Image](https://github.com/user-attachments/assets/fdf3664f-828c-4055-a3d4-8cdbf3527718)
